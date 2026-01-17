@@ -1,23 +1,13 @@
 local options = {
   ensure_installed = {
-    "bash",
-    "fish",
     "lua",
-    "luadoc",
     "markdown",
-    "printf",
-    "toml",
-    "vim",
-    "vimdoc",
-    "yaml",
     "javascript",
     "typescript",
     "tsx",
     "html",
     "css",
     "json",
-    "xml",        -- Maven pom.xml, Spring configs
-    "properties", -- application.properties files
   },
 
   highlight = {

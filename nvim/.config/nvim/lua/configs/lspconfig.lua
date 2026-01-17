@@ -27,27 +27,38 @@ vim.lsp.config('ts_ls', {
     "typescript.tsx"
   },
   root_markers = { "package.json", "tsconfig.json", "jsconfig.json", ".git" },
-  settings = {
-    typescript = {
-      inlayHints = {
-        includeInlayParameterNameHints = "none", -- Disable to prevent visual clutter
-        includeInlayFunctionParameterTypeHints = false,
-        includeInlayVariableTypeHints = false,
-        includeInlayPropertyDeclarationTypeHints = false,
-        includeInlayFunctionLikeReturnTypeHints = false,
-      },
-    },
-    javascript = {
-      inlayHints = {
-        includeInlayParameterNameHints = "none",
-        includeInlayFunctionParameterTypeHints = false,
-        includeInlayVariableTypeHints = false,
-        includeInlayPropertyDeclarationTypeHints = false,
-        includeInlayFunctionLikeReturnTypeHints = false,
-      },
-    },
-  },
-})
+   settings = {
+     typescript = {
+       inlayHints = {
+         includeInlayParameterNameHints = "none", -- Disable to prevent visual clutter
+         includeInlayFunctionParameterTypeHints = false,
+         includeInlayVariableTypeHints = false,
+         includeInlayPropertyDeclarationTypeHints = false,
+         includeInlayFunctionLikeReturnTypeHints = false,
+       },
+       preferences = {
+         includePackageJsonAutoImports = "on",
+       },
+     },
+     javascript = {
+       inlayHints = {
+         includeInlayParameterNameHints = "none",
+         includeInlayFunctionParameterTypeHints = false,
+         includeInlayVariableTypeHints = false,
+         includeInlayPropertyDeclarationTypeHints = false,
+         includeInlayFunctionLikeReturnTypeHints = false,
+       },
+       preferences = {
+         includePackageJsonAutoImports = "on",
+       },
+     },
+   },
+    on_attach = function(client, bufnr)
+      if vim.api.nvim_buf_line_count(bufnr) > 3000 then
+        vim.lsp.stop_client(client.id)
+      end
+    end,
+ })
 
 -- Configure tailwindcss with explicit filetypes (excluding plain .ts files)
 -- This prevents tailwindcss from attaching to TypeScript files that aren't React/JSX

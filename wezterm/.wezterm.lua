@@ -32,8 +32,8 @@ local config = {
 	underline_position = "-4pt",
 
 	-- Uncomment for transparency:
-	-- window_background_opacity = 0.95,
-	-- macos_window_background_blur = 90,
+	window_background_opacity = 0.95,
+	macos_window_background_blur = 10,
 }
 
 return config
