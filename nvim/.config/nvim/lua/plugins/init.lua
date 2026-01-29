@@ -118,6 +118,18 @@ return {
 		end,
 	},
 	{
+		"mfussenegger/nvim-dap",
+		event = "VeryLazy",
+		dependencies = {
+			"rcarriga/nvim-dap-ui",
+			"nvim-neotest/nvim-nio",
+			"jay-babu/mason-nvim-dap.nvim",
+		},
+		config = function()
+			require("configs.dap")
+		end,
+	},
+	{
 		"stevearc/conform.nvim",
 		event = "BufWritePre", -- uncomment for format on save
 		opts = require("configs.conform"),
@@ -213,7 +225,7 @@ return {
 	--   },
 	-- },
 	{
-		"ggandor/leap.nvim",
+		url = "https://codeberg.org/andyg/leap.nvim",
 		event = "VeryLazy",
 		config = function()
 			local leap = require("leap")

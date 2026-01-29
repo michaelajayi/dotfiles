@@ -1,0 +1,38 @@
+#!/usr/bin/env node
+
+const { spawn } = require("child_process");
+
+const argv = process.argv.slice(2);
+const serverPath = argv.shift();
+if (!serverPath) {
+  console.error("Missing js-debug server path");
+  process.exit(1);
+}
+
+const child = spawn("node", [serverPath, ...argv], {
+  stdio: ["ignore", "pipe", "inherit"],
+});
+
+let buffer = "";
+let printed = false;
+
+child.stdout.on("data", (chunk) => {
+  buffer += chunk.toString();
+  let lines = buffer.split(/\r?\n/);
+  buffer = lines.pop() || "";
+
+  for (const line of lines) {
+    if (!printed) {
+      const match = line.match(/:(\d+)\s*$|(\d+)\s*$/);
+      if (match) {
+        process.stdout.write(match[1] + "\n");
+        printed = true;
+      }
+    }
+  }
+});
+
+child.on("exit", (code) => {
+  process.exit(code ?? 0);
+});
+

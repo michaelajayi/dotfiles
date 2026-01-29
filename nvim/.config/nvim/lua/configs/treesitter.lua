@@ -84,6 +84,22 @@ local options = {
 
 require("nvim-treesitter.configs").setup(options)
 
+local function set_comment_italics()
+  local groups = { "@comment", "@comment.documentation" }
+
+  for _, group in ipairs(groups) do
+    local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
+    hl.italic = true
+    vim.api.nvim_set_hl(0, group, hl)
+  end
+end
+
+set_comment_italics()
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+  callback = set_comment_italics,
+})
+
 -- Fix ampersand (&) highlighting in JSX/TSX strings
 -- Treesitter treats & as HTML entity start, breaking URL query string highlighting
 vim.api.nvim_create_autocmd("FileType", {

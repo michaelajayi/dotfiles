@@ -17,3 +17,15 @@ vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
     end
   end,
 })
+
+local function set_base_comment_italics()
+  local hl = vim.api.nvim_get_hl(0, { name = "Comment", link = false })
+  hl.italic = true
+  vim.api.nvim_set_hl(0, "Comment", hl)
+end
+
+set_base_comment_italics()
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+  callback = set_base_comment_italics,
+})
