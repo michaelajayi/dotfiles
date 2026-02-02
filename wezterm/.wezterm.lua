@@ -15,12 +15,12 @@ local config = {
 		{ family = "MonoLisa", weight = "Medium" },
 		-- "JetBrainsMono Nerd Font Mono", -- Fallback for Nerd Font icons in tmux
 	}),
-	font_size = 14,
+	font_size = 13,
 	line_height = 1.2,
 	harfbuzz_features = { "liga=1", "calt=1", "ss02=1" },
 
 	-- Appearance
-	color_scheme = "rose-pine",
+	color_scheme = "Tokyo Night",
 	default_cursor_style = "BlinkingBar",
 
 	-- Performance

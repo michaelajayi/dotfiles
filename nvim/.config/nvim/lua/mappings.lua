@@ -164,6 +164,14 @@ map("n", "gi", vim.lsp.buf.implementation, { desc = "Go to implementation" })
 map("n", "K", vim.lsp.buf.hover, { desc = "Show hover documentation" })
 map("n", "<leader>rn", vim.lsp.buf.rename, { desc = "LSP rename" })
 map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
+map("n", "<leader>cu", function()
+	vim.lsp.buf.code_action({
+		apply = true,
+		context = {
+			only = { "source.removeUnused.ts" },
+		},
+	})
+end, { desc = "Remove unused imports" })
 map("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
 map("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
 map("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic" })
