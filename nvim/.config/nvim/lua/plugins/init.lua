@@ -15,7 +15,7 @@ return {
 		config = function()
 			require("supermaven-nvim").setup({
 				keymaps = {
-					accept_suggestion = "<Tab>",
+					accept_suggestion = "<C-l>",
 					clear_suggestion = "<C-]>",
 					accept_word = "<C-j>",
 				},
@@ -25,18 +25,12 @@ return {
 					help = true,
 					gitcommit = true,
 					gitrebase = true,
-					javascript = true,
-					typescript = true,
-					javascriptreact = true,
-					typescriptreact = true,
-					["javascript.jsx"] = true,
-					["typescript.tsx"] = true,
 				},
 				color = {
-					suggestion_color = "#808080",
+					suggestion_color = "#9aa0a6",
 					cterm = 244,
 				},
-				log_level = "off",
+				log_level = "error",
 				disable_inline_completion = false,
 				disable_keymaps = false,
 			})
