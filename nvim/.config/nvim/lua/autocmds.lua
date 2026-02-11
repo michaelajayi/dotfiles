@@ -29,3 +29,33 @@ set_base_comment_italics()
 vim.api.nvim_create_autocmd("ColorScheme", {
   callback = set_base_comment_italics,
 })
+
+local function set_supermaven_inline(enabled)
+  local ok, preview = pcall(require, "supermaven-nvim.completion_preview")
+  if not ok then
+    return
+  end
+
+  preview.disable_inline_completion = not enabled
+  if not enabled then
+    preview.on_dispose_inlay()
+  end
+end
+
+local supermaven_group = vim.api.nvim_create_augroup("SupermavenInlineToggle", { clear = true })
+
+vim.api.nvim_create_autocmd("User", {
+  pattern = "BlinkCmpMenuOpen",
+  group = supermaven_group,
+  callback = function()
+    set_supermaven_inline(false)
+  end,
+})
+
+vim.api.nvim_create_autocmd("User", {
+  pattern = { "BlinkCmpMenuClose", "BlinkCmpHide" },
+  group = supermaven_group,
+  callback = function()
+    set_supermaven_inline(true)
+  end,
+})

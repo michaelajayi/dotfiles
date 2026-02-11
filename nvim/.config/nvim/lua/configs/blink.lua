@@ -6,15 +6,40 @@ return {
     ["<CR>"] = { "accept", "fallback" },
     ["<Tab>"] = {
       function(cmp)
-        if cmp.snippet_active() then
-          return cmp.snippet_forward()
-        else
+        if cmp.is_visible and cmp.is_visible() then
           return cmp.select_next()
         end
+
+        local ok, suggestion = pcall(require, "supermaven-nvim.completion_preview")
+        if ok and suggestion.has_suggestion() then
+          vim.schedule(function()
+            suggestion.on_accept_suggestion()
+          end)
+          return true
+        end
+
+        if cmp.snippet_active() then
+          return cmp.snippet_forward()
+        end
+
+        return false
       end,
       "fallback",
     },
-    ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
+    ["<S-Tab>"] = {
+      function(cmp)
+        if cmp.is_visible and cmp.is_visible() then
+          return cmp.select_prev()
+        end
+
+        if cmp.snippet_active() then
+          return cmp.snippet_backward()
+        end
+
+        return false
+      end,
+      "fallback",
+    },
     ["<Up>"] = { "select_prev", "fallback" },
     ["<Down>"] = { "select_next", "fallback" },
     ["<C-p>"] = { "select_prev", "fallback" },
