@@ -5,20 +5,50 @@ local builtin = require("telescope.builtin")
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
-
 -- Keymap for finding ALL files, including hidden ones
+
 map("n", "<space>fa", function()
 	builtin.find_files({
 		hidden = true,
 		no_ignore = true,
+		follow = true, -- important with stow/symlinks
 	})
-end, { desc = "Find ALL Files (including hidden) " })
+end, { desc = "Find ALL Files (hidden + no ignore + follow) " })
+
+map("n", "<leader>fw", function()
+	builtin.live_grep({
+		additional_args = function()
+			return { "--hidden", "--no-ignore", "--follow", "--glob", "!.git/*" }
+		end,
+	})
+end, { desc = "Grep ALL (hidden + no ignore + follow)" })
 
 vim.keymap.set("n", "<space>en", function()
 	builtin.find_files({
 		cwd = vim.fn.stdpath("config"),
 	})
 end)
+
+local function relpath()
+	local bufname = vim.api.nvim_buf_get_name(0)
+	if bufname == "" then
+		return ""
+	end
+	-- relative to current working directory (:pwd)
+	return vim.fn.fnamemodify(bufname, ":.")
+end
+
+vim.keymap.set("n", "<leader>cp", function()
+	local p = relpath()
+	if p == "" then
+		vim.notify("No file path for current buffer", vim.log.levels.WARN)
+		return
+	end
+	-- Copy to system clipboard + unnamed register
+	vim.fn.setreg("+", p)
+	vim.fn.setreg('"', p)
+	vim.notify("Copied: " .. p)
+end, { desc = "Copy relative path of current buffer" })
 
 vim.api.nvim_set_hl(0, "YankFlashBG", { bg = "#AEC6CF", bold = true })
 
@@ -53,13 +83,14 @@ map("i", "<Up>", "<C-o>gk", { desc = "Move up (visual line)", silent = true })
 vim.g.border_style = "rounded" -- or "single", "double", "solid", "none"
 
 vim.keymap.set("n", "<leader>fgw", function()
-	-- Get the current word under the cursor at the moment the key is pressed
 	local current_word = vim.fn.expand("<cword>")
-
 	builtin.live_grep({
 		default_text = current_word,
+		additional_args = function()
+			return { "--hidden", "--no-ignore", "--follow", "--glob", "!.git/*" }
+		end,
 	})
-end, { desc = "Live Grep (Word Under Cursor)" })
+end, { desc = "Grep word under cursor (ALL files)" })
 
 -- Sets the main 'Keyword' group to italic (covers most languages)
 vim.api.nvim_set_hl(0, "Keyword", { italic = true })
@@ -83,6 +114,8 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 })
 
 vim.opt.termguicolors = true
+
+vim.o.winbar = "%{%v:lua.vim.fn.expand('%:.')%}"
 
 -- map("n", "<Tab>", "<Cmd>bnext<CR>", { desc = "Next buffer" })
 -- map("n", "<S-Tab>", "<Cmd>bprevious<CR>", { desc = "Previous buffer" })
@@ -145,6 +178,8 @@ map("n", "<leader>ap", "<cmd>FixAutopairs<CR>", { desc = "Fix/restart autopairs"
 
 -- Tell neovim that - is a keyword for example bg-red-600 for diw, ciw commands to work properly
 vim.opt.iskeyword:append("-")
+
+vim.opt.clipboard = "unnamedplus"
 
 -- nvim-ufo keymaps
 map("n", "<leader><leader>", "za", { desc = "Toggle fold" })

@@ -25,6 +25,8 @@ o.termguicolors = true
 -- Ensure cursor is visible and can be animated
 vim.opt.guicursor = "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50"
 
+-- vim.o.winbar = "%{%v:lua.vim.fn.expand('%:.')%}"
+
 -- Disable terminal synchronization for better scroll performance on macOS
 -- termsync uses terminal sync sequences to prevent tearing, but can cause lag
 -- Recommended by Mitchell Hashimoto for smooth scrolling on Mac
@@ -54,8 +56,8 @@ vim.api.nvim_create_autocmd("FileChangedShellPost", {
 	end,
 })
 
-o.cursorline = true
-o.cursorlineopt = "both"
+-- o.cursorline = true
+-- o.cursorlineopt = "both"
 
 o.wrap = true -- Enable line wrapping
 o.linebreak = true -- Break lines at word boundaries (no more "nex" and "t-config" splits!)
@@ -85,7 +87,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 	callback = function()
 		-- Force cursor line number to white
 		vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#ffffff", bold = true })
-		vim.api.nvim_set_hl(0, "CursorLine", { bg = "#26233a" })
+		-- vim.api.nvim_set_hl(0, "CursorLine", { bg = "#26233a" })
 
 		-- Get base String highlight to ensure consistency
 		local string_hl = vim.api.nvim_get_hl(0, { name = "String" })
